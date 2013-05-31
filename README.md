@@ -1,7 +1,7 @@
 dotfiles-local
 ==============
 
-My emacs configuration, which piggybacks on [Jack Rusher's dotfiles
+My emacs configuration piggybacks on [Jack Rusher's dotfiles
 configuration](https://github.com/jackrusher/dotfiles), which does the
 real heavy lifting. (His dotemacs.el allows for a <username>-local.el
 to supplement itself.)

@@ -4,7 +4,7 @@ dotfiles-local
 My emacs configuration piggybacks on [Jack Rusher's dotfiles
 configuration](https://github.com/jackrusher/dotfiles), which does the
 real heavy lifting. His `dotemacs.el` allows for a `[username]-local.el`
-to supplement itself.
+as a separate emacs config sandbox.
 
 As with any emacs config, my primary concerns are preserving keyboard
 navigation (nobody puts `M-<arrow>` in a corner) and fiddling with

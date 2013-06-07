@@ -22,12 +22,6 @@
  '(org-support-shift-select t))
 (custom-set-faces)
 
-;; I have no use for M-<up/down arrow> moving my sections.
-;; Re-set keyboard navigation to up/down/sideways by logical unit.
-(eval-after-load 'org-mode
-  (dolist (binding (list (kbd "M-<up>") (kbd "M-<down>") (kbd "M-<left>") (kbd "M-<right>") (kbd "S-<up>") (kbd "S-<down>") (kbd "M-S-<left>") (kbd "M-S-<right>")))
-    (define-key org-mode-map binding nil)))
-
 ;; Org-mode configuration, necessary for MobileOrg access.
 ;;  see http://mobileorg.ncogni.to/doc/getting-started/using-dropbox/
 ;;;;;;;;;;;;;; CURRENTLY NONFUNCTIONAL
@@ -38,6 +32,15 @@
 ;;;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
 
+;; Nobody puts in-file navigation in a corner.
+;; Re-set keyboard navigation to up/down/sideways by logical unit.
+(require 'org)
+(eval-after-load 'org-mode
+  (dolist (binding (list (kbd "M-<up>") (kbd "M-<down>") (kbd "M-<left>") (kbd "M-<right>") (kbd "S-<up>") (kbd "S-<down>") (kbd "M-S-<left>") (kbd "M-S-<right>")))
+    (define-key org-mode-map binding nil)))
+
 ;;;; END ORG-MODE ===============================================
 
-;;;; TODO I want an HTML5 boilerplate function.
+;; TODO Add word to dictionary
+
+;;;; TODO HTML5 boilerplate function.

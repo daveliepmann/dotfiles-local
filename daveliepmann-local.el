@@ -36,7 +36,7 @@
 ;; Re-set keyboard navigation to up/down/sideways by logical unit.
 (require 'org)
 (eval-after-load 'org-mode
-  (dolist (binding (list (kbd "M-<up>") (kbd "M-<down>") (kbd "M-<left>") (kbd "M-<right>") (kbd "S-<up>") (kbd "S-<down>") (kbd "M-S-<left>") (kbd "M-S-<right>")))
+  (dolist (binding (list (kbd "M-<up>") (kbd "M-<down>") (kbd "M-<left>") (kbd "M-<right>") (kbd "S-<up>") (kbd "S-<down>") (kbd "M-S-<left>") (kbd "M-S-<right>") (kbd "M-S-<down>") (kbd "M-S-<up>")))
     (define-key org-mode-map binding nil)))
 
 ;;;; END ORG-MODE ===============================================

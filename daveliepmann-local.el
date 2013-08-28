@@ -44,3 +44,9 @@
 ;; TODO Add word to dictionary
 
 ;;;; TODO HTML5 boilerplate function.
+
+;; Floobits integration
+(load "~/.emacs.d/floobits/floobits.el")
+
+;; Cursor color must differ from trailing whitespace notifier
+(set-face-attribute 'trailing-whitespace nil :background nil :foreground "gray30")

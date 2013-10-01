@@ -11,16 +11,16 @@
 ;; ; with such existential question I want to merely press <y> or <n>
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; ;;;; ORG-MODE ===============================================
-;; ;; Let Shift-<arrow> select text instead of org-mode's custom
-;; ;; functionality. This is a config option.
-;; (custom-set-variables
-;;  ;; custom-set-variables was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(org-support-shift-select t))
-;; (custom-set-faces)
+;;;; ORG-MODE ===============================================
+;; Let Shift-<arrow> select text instead of org-mode's custom
+;; functionality. This is a config option.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-support-shift-select t))
+(custom-set-faces)
 
 ;; ;; Org-mode configuration, necessary for MobileOrg access.
 ;; ;;  see http://mobileorg.ncogni.to/doc/getting-started/using-dropbox/
@@ -43,18 +43,34 @@
 
 ;; TODO Add word to dictionary shortcut
 
-;;;; TODO HTML5 boilerplate function.
+;; TODO HTML5 boilerplate function.
+;; yasnippet is of the devil; but autoinsert might help:
+;; http://www.opensource.apple.com/source/emacs/emacs-51/emacs/lisp/autoinsert.el
 
 ;; TODO frame management:
 ;;      - automatic multi-frame setup
 ;;      - show how many columns are allocated when resizing
 
 ;; Floobits integration
-;;(load "~/.emacs.d/floobits/floobits.el")
-
-;; Cursor color must differ from trailing whitespace notifier
-(set-face-attribute 'trailing-whitespace nil :background nil :foreground "gray30")
+(load "~/.emacs.d/floobits/floobits.el")
 
 ;; Unbind the right alt/option key from emacs meta so that it can be used for special character entry
 (setq mac-option-key-is-meta t)
 (setq mac-right-option-modifier nil)
+
+;; TODO execute fill-paragraph on current/previous paragraph every time I create a newline (or copy/paste, or space) in org-mode. Manual M-q is for the birds.
+
+;; TODO flash line that cursor is on when using C-l (same color as evaling)
+
+;; Enable inline coloring of color codes for development:
+(add-hook 'css-mode-hook 'rainbow-mode)
+(add-hook 'clojure-mode-hook 'rainbow-mode)
+(add-hook 'html-mode-hook 'rainbow-mode)
+(add-hook 'processing-mode-hook 'rainbow-mode)
+
+;; TODO add keybinding for autocomplete quick help
+;; nonfunctional, despite http://www.emacswiki.org/emacs/ESSAuto-complete:
+;; (define-key ac-completing-map (kbd "s-.") 'ac-quick-help)
+
+;; Full-screen keybinding
+(global-set-key (kbd "C-<return>") 'toggle-frame-fullscreen)

@@ -44,7 +44,7 @@
 ;; TODO Add word to dictionary shortcut
 
 ;; TODO HTML5 boilerplate function.
-;; yasnippet is of the devil; but autoinsert might help:
+;; no me gusta yasnippet, but autoinsert might help:
 ;; http://www.opensource.apple.com/source/emacs/emacs-51/emacs/lisp/autoinsert.el
 
 ;; TODO frame management:
@@ -68,9 +68,25 @@
 (add-hook 'html-mode-hook 'rainbow-mode)
 (add-hook 'processing-mode-hook 'rainbow-mode)
 
-;; TODO add keybinding for autocomplete quick help
-;; nonfunctional, despite http://www.emacswiki.org/emacs/ESSAuto-complete:
-;; (define-key ac-completing-map (kbd "s-.") 'ac-quick-help)
+;; Full-screen (from old master config)
+(defun toggle-fullscreen ()
+  "Toggle full screen"
+  (interactive)
+  (set-frame-parameter
+   nil 'fullscreen
+   (when (not (frame-parameter nil 'fullscreen)) 'fullscreen)))
 
-;; Full-screen keybinding
-(global-set-key (kbd "C-<return>") 'toggle-frame-fullscreen)
+;; OS X Lion fullscreen mode command-return
+(global-set-key (kbd "<C-return>") 'toggle-fullscreen)
+
+;; Undo and redo window layout changes with C-c <left/right>
+(winner-mode 1)
+
+;; Open .info files using the info command (Info-mode is insufficient)
+(defun info-mode ()
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (kill-buffer (current-buffer))
+    (info file-name)))
+
+(add-to-list 'auto-mode-alist '("\\.info\\'" . info-mode))

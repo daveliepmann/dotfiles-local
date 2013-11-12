@@ -90,3 +90,15 @@
     (info file-name)))
 
 (add-to-list 'auto-mode-alist '("\\.info\\'" . info-mode))
+
+;; TODO Preview markdown (.md) files using grip
+;;;; from terminal: grip --gfm <filename>
+;;;; or terminal: grip --gfm, then browser: http://localhost:5000/<filename>
+
+;; Scheme using guile:
+(setq geiser-active-implementations '(racket))
+(setq geiser-racket-binary "/Applications/Racket v5.3.6/bin/racket")
+
+;; Prevent magit from opening new emacs window
+;; https://github.com/magit/magit/issues/862#issuecomment-25950323
+(set-variable 'magit-emacsclient-executable "/usr/local/Cellar/emacs/HEAD/bin/emacsclient")

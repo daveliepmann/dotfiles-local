@@ -62,6 +62,9 @@
 
 ;; TODO flash line that cursor is on when using C-l (same color as evaling)
 
+;; Trigger html-mode in php:
+(add-to-list 'auto-mode-alist '("\\.php\\'" . html-mode))
+
 ;; Enable inline coloring of color codes for development:
 (add-hook 'css-mode-hook 'rainbow-mode)
 (add-hook 'clojure-mode-hook 'rainbow-mode)
@@ -102,3 +105,36 @@
 ;; Prevent magit from opening new emacs window
 ;; https://github.com/magit/magit/issues/862#issuecomment-25950323
 (set-variable 'magit-emacsclient-executable "/usr/local/Cellar/emacs/HEAD/bin/emacsclient")
+
+;; Un-fill region (for exporting, e.g. to tumblr)
+;; from http://ergoemacs.org/emacs/modernization_fill-paragraph.html
+(defun compact-uncompact-block ()
+  "Remove or add line ending chars on current paragraph.
+This command is similar to a toggle of `fill-paragraph'.
+When there is a text selection, act on the region."
+  (interactive)
+  ;; This command symbol has a property “'stateIsCompact-p”.
+  (let (currentStateIsCompact (bigFillColumnVal 90002000) (deactivate-mark nil))
+    ;; 90002000 is just random. you can use `most-positive-fixnum'
+    (save-excursion
+      ;; Determine whether the text is currently compact.
+      (setq currentStateIsCompact
+            (if (eq last-command this-command)
+                (get this-command 'stateIsCompact-p)
+              (if (> (- (line-end-position) (line-beginning-position)) fill-column) t nil)))
+      (if (region-active-p)
+          (if currentStateIsCompact
+              (fill-region (region-beginning) (region-end))
+            (let ((fill-column bigFillColumnVal))
+              (fill-region (region-beginning) (region-end))))
+        (if currentStateIsCompact
+            (fill-paragraph nil)
+          (let ((fill-column bigFillColumnVal))
+            (fill-paragraph nil))))
+      (put this-command 'stateIsCompact-p (if currentStateIsCompact nil t)))))
+
+;; Distinguish multiple buffers with identical filenames.
+;; See http://www.gnu.org/software/emacs/manual/html_node/emacs/Uniquify.html
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward
+      uniquify-separator ":")

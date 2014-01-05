@@ -62,9 +62,6 @@
 
 ;; TODO flash line that cursor is on when using C-l (same color as evaling)
 
-;; Trigger html-mode in php:
-(add-to-list 'auto-mode-alist '("\\.php\\'" . html-mode))
-
 ;; Enable inline coloring of color codes for development:
 (add-hook 'css-mode-hook 'rainbow-mode)
 (add-hook 'clojure-mode-hook 'rainbow-mode)
@@ -84,6 +81,9 @@
 
 ;; Undo and redo window layout changes with C-c <left/right>
 (winner-mode 1)
+
+;; Open .php files with html-mode
+(add-to-list 'auto-mode-alist '("\\.php\\'" . html-mode))
 
 ;; Open .info files using the info command (Info-mode is insufficient)
 (defun info-mode ()
@@ -136,5 +136,14 @@ When there is a text selection, act on the region."
 ;; Distinguish multiple buffers with identical filenames.
 ;; See http://www.gnu.org/software/emacs/manual/html_node/emacs/Uniquify.html
 (require 'uniquify)
-(setq uniquify-buffer-name-style 'post-forward
-      uniquify-separator ":")
+(setq uniquify-buffer-name-style 'forward
+      uniquify-separator "/")
+
+;; Git color defaults are broken. These fixes are cribbed from magnars
+;; https://github.com/magnars/.emacs.d/blob/master/setup-magit.el
+(require 'magit)
+(set-face-background 'magit-item-highlight "#333333")
+(set-face-background 'diff-file-header "#555555")
+(set-face-foreground 'diff-context "#777777")
+(set-face-foreground 'diff-added "#00cc33")
+(set-face-foreground 'diff-removed "#ff0000")

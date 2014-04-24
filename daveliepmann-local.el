@@ -63,10 +63,7 @@
 ;; TODO flash line that cursor is on when using C-l (same color as evaling)
 
 ;; Enable inline coloring of color codes for development:
-(add-hook 'css-mode-hook 'rainbow-mode)
-(add-hook 'clojure-mode-hook 'rainbow-mode)
-(add-hook 'html-mode-hook 'rainbow-mode)
-(add-hook 'processing-mode-hook 'rainbow-mode)
+(add-hook 'prog-mode-hook 'rainbow-mode)
 
 ;; Full-screen (from old master config)
 (defun toggle-fullscreen ()
@@ -147,3 +144,86 @@ When there is a text selection, act on the region."
 (set-face-foreground 'diff-context "#777777")
 (set-face-foreground 'diff-added "#00cc33")
 (set-face-foreground 'diff-removed "#ff0000")
+
+;; Set frame to 80 columns
+;; from http://nullprogram.com/blog/2010/10/06/
+;; see also C-x +
+(defun set-window-width (n)
+  "Set the selected window's width."
+  (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
+
+(defun set-80-columns ()
+  "Set the selected window to 80 columns."
+  (interactive)
+  (set-window-width 80))
+
+(global-set-key "\C-x~" 'set-80-columns)
+
+;; Toggle highlighting on column 80
+(defun highlight-col-80 ()
+  (interactive) (column-marker-1 80))
+
+;; ;; Highlight current line
+;; (global-hl-line-mode 1)
+;; ;; ...as unobtrusively as possible
+;; (set-face-background 'hl-line "#112211")
+;; ;; TODO doesn't play well with rainbow-mode. May be fixed in trunk 115615 of emacs.
+
+;; I want diffs to show side-by-side
+(setq ediff-split-window-function 'split-window-horizontally
+      ediff-window-setup-function 'ediff-setup-windows-plain)
+
+(require 'cider)
+
+(load "facts.el")
+
+;;;; Python config
+;; use IPython
+(setq-default py-shell-name "ipython")
+(setq-default py-which-bufname "IPython")
+;; use the wx backend, for both mayavi and matplotlib
+(setq py-python-command-args
+      '("--gui=wx" "--pylab=wx" "-colors" "Linux"))
+(setq py-force-py-shell-name-p t)
+
+;; switch to the interpreter after executing code
+(setq py-shell-switch-buffers-on-execute-p t)
+(setq py-switch-buffers-on-execute-p t)
+;; don't split windows
+(setq py-split-windows-on-execute-p nil)
+;; try to automagically figure out indentation
+(setq py-smart-indentation t)
+
+;; Add FIXME (used by lein) to master list of highlighted words TODO/XXX/BUG
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (font-lock-add-keywords
+             nil '(("\\<\\(FIXME\\)" 1 font-lock-warning-face prepend)))))
+
+;; I always want to close CIDER. See cider-quit in
+;; cider-interaction.el for original w/y-or-n-p
+(defun really-quit-cider ()
+  (interactive)
+  (dolist (connection nrepl-connection-list)
+    (when connection
+      (nrepl-close connection)))
+  (message "All active nREPL connections were closed")
+  (cider-close-ancilliary-buffers))
+
+(defalias 'cider-quit 'really-quit-cider)
+
+;; web-mode handles JS within HTML:
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+
+(defun csv-to-sexp (csv)
+  "Parses the string `csv` as a comma-separated-value file,
+returning a sexp containing the values with strings converted to
+numbers where appropriate."
+  (-map (lambda (s) (-map 'reformat-field (s-split "," s))) (s-lines csv)))
+
+;; Faster bold/italic keybindings for markdown-mode
+(add-hook 'markdown-mode-hook
+          (lambda () (local-set-key (kbd "C-c b") #'markdown-insert-bold)))
+(add-hook 'markdown-mode-hook
+          (lambda () (local-set-key (kbd "C-c i") #'markdown-insert-italic)))
